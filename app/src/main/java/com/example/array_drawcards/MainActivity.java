@@ -14,8 +14,12 @@ import pl.droidsonroids.gif.GifImageView;
 public class MainActivity extends AppCompatActivity {
     GifImageView card;
     Button draw;
-    String[] cardname = {"club_a","diamond_2","diamond_3","heart_4","diamond_5","diamond_6","diamond_7","diamond_8","diamond_9","diamond_10","heart_j","spade_q","heart_k"};
+    String[] cardname = new String[52];
+            /*{"club_a","diamond_2","diamond_3","heart_4","diamond_5","diamond_6","diamond_7","diamond_8","diamond_9","diamond_10","heart_j","spade_q","heart_k"};*/
     TextView ketqua;
+    private static final String[] ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k", "a" }; // 2->A
+    private static final String[] suits = { "club", "diamond", "heart", "spade" };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,17 +27,16 @@ public class MainActivity extends AppCompatActivity {
         card = (GifImageView)findViewById(R.id.givCard);
         draw = (Button)findViewById(R.id.btnDraw);
         ketqua = (TextView)findViewById(R.id.tvResult);
-
+        cardname = DeckOfCard(suits,ranks);
         draw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Random random = new Random();
-                String name = cardname[random.nextInt(13)];
+                String name = cardname[random.nextInt(52)];
                 int id = getResources().getIdentifier(name,"drawable",getPackageName());
                 card.setImageResource(id);
                 String[] type = name.split("_");
                 ketqua.setText("Bạn rút được lá: " + ReadCardName(type));
-
             }
         });
     }
@@ -68,6 +71,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return so + " " + chat;
+    }
+    String[] DeckOfCard(String[] suits,String[] ranks)
+    {
+            int i = 0;
+            for (int j = 0; j < suits.length; j++)
+            {
+                for (int k = 0; k < ranks.length;k++)
+                {
+                    cardname[i] = suits[j] + "_" + ranks[k];
+                    i++;
+                }
+
+            }
+
+        return  cardname;
     }
 
 }
